@@ -86,7 +86,9 @@ Two VM offer acces to cloud infrastrucure via web services based on jupyter note
   - https://gitlab.cern.ch/RooUnfold
   - https://github.com/christopherpoole/CADMesh
   - access to CYGNO cluster (~ 50 cores), condor queues, via the notebook terminal or via any computer by means of [dedicated container](https://github.com/CYGNUS-RD/mycondor)
-
+### Tag < v1.0.20 ###
+  - cygno lib with PMT readout
+  - [full packege list](https://raw.githubusercontent.com/CYGNUS-RD/cygno/main/v1.0.20.txt)
 ### Usage:
 * to access the resource login with AAI credentials (see above to be athorized) 
 <img src="https://github.com/CYGNUS-RD/cygno/blob/main/img/login.png" alt="login" style="width:400px;"/>
