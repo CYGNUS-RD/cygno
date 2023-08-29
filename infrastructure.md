@@ -11,10 +11,12 @@ Moreover, computing resources are available at LNF and LNGS (Cygno VM login and 
 
 
 ### Signup on computing ressources (needed for all resources: CLOUD, LNGS, LNF)
+* if you alredy have a **username** INFN please signup in the INFN Cloud IAM https://iam.cloud.infn.it/ as **user** ([see INFN Cloud Guide](https://guides.cloud.infn.it/docs/users-guides/en/latest/users_guides/getting_started/getting_started.html)) specifing in the *Notes* field to be part of **cygno-user** group
 * if you are not associeted/hosted/employed of INFN plese signup on: https://signup.app.infn.it/ (tips for foreign users see below)
-* accept the security policy  https://userportal.app.infn.it/;
-* follow the traning on computing security;
-* for foreign users no CODICE FISCALE (CF) is needed;
+  * accept the security policy  https://userportal.app.infn.it/ (for foreign users no CODICE FISCALE (CF) is needed);
+  * follow the traning on computing security;
+  * signup in the INFN Cloud IAM https://iam.cloud.infn.it/ as **user** ([see INFN Cloud Guide](https://guides.cloud.infn.it/docs/users-guides/en/latest/users_guides/getting_started/getting_started.html)) specifing in the *Notes* field to be part of **cygno-user** group
+* if you do not have username in INFN or you get an error about username plese contact Giovanni Mazzitelli
 <!---
   * for foreign users to be reggistred on AAI you need a CODICE FISCALE (CF) that you can generate with the tool https://quifinanza.it/strumenti/codice-fiscale 
   ```
@@ -22,10 +24,6 @@ Moreover, computing resources are available at LNF and LNGS (Cygno VM login and 
       (LUOGO di NASCITA: BRASILE)
   ```
 --->
-  * up to now also a local username in INFN local sites computing resources is required (see following point)
-
-### Computing resources on INFN Cloud
-* signup as **user** on [INFN CLOUD](https://guides.cloud.infn.it/docs/users-guides/en/latest/users_guides/getting_started/getting_started.html), as responsable put everyware **Giovanni Mazzitelli**
 * when approved follow the [HOWTO](https://github.com/CYGNUS-RD/cygno/blob/main/infrastructure.md#usage-of-the-cygno-notebook-web-interface-and-cloud-services) to exploit the resources
 
 
@@ -58,7 +56,6 @@ the cloud-storage/ contain tree backet:
 * (cygno - old data repository, USERNAME private repository on cloud, scratch repository on cloud)
 
 
-
 ### Usage of the CYGNO notebook web interface and Cloud services
 Two VM offer acces to cloud infrastrucure via web services based on jupyter notebook interface
 * production: 
@@ -86,9 +83,6 @@ Two VM offer acces to cloud infrastrucure via web services based on jupyter note
   - https://gitlab.cern.ch/RooUnfold
   - https://github.com/christopherpoole/CADMesh
   - access to CYGNO cluster (~ 50 cores), condor queues, via the notebook terminal or via any computer by means of [dedicated container](https://github.com/CYGNUS-RD/mycondor)
-### Tag < v1.0.20 ###
-  - cygno lib with PMT readout
-  - [full packege list](https://raw.githubusercontent.com/CYGNUS-RD/cygno/main/v1.0.20.txt)
 ### Usage:
 * to access the resource login with AAI credentials (see above to be athorized) 
 <img src="https://github.com/CYGNUS-RD/cygno/blob/main/img/login.png" alt="login" style="width:400px;"/>
