@@ -76,6 +76,7 @@ Two VM offer acces to cloud infrastrucure via web services based on jupyter note
   - cygno lib v10 (PMT readout)
 ### Tag v1.0.18 ###
   - cygno lib v9 (PMT readout)
+  - emacs cli
 ### Tag v1.0.17 ###
   - python 3.9.10 (not deafult), emacs, screen, root_numpy, uproot, pydot, tensorflow, opencv-python, graphviz
   - [full packege list](https://raw.githubusercontent.com/CYGNUS-RD/cygno/main/requirements.txt)
