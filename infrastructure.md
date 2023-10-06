@@ -1,4 +1,4 @@
-# Computing infrastrcture
+# Computing infrastructure
 The CYGNO exepriment develop a facility based on the [INFN cloud](https://www.cloud.infn.it/) to host:
 - data experiment storage ([S3 based](https://it.wikipedia.org/wiki/Amazon_S3)) - [data](https://monitoring.cloud.infn.it:3000/d/cygno-s3/storage-s3-cygno?orgId=1&var-project=cygno&var-bucket=cygno-data), [sim](https://monitoring.cloud.infn.it:3000/d/cygno-s3/storage-s3-cygno?orgId=1&var-project=cygno&var-bucket=cygno-sim), [analisys](https://monitoring.cloud.infn.it:3000/d/cygno-s3/storage-s3-cygno?orgId=1&var-project=cygno&var-bucket=cygno-analisys)
 - tape backup storage - [status](https://t1metria.cr.cnaf.infn.it/d/ZArHZvEMz/storage-usage-per-experiment?orgId=18&var-exp=cygn&var-vo=CYGNO&from=now-30d&to=now) (NB for disk space refer [S3](https://monitoring.cloud.infn.it:3000/d/cygno-s3/storage-s3-cygno?orgId=1) starage status)
@@ -108,3 +108,22 @@ Two VM offer acces to cloud infrastrucure via web services based on jupyter note
 
 * it's strogly sujest to develop and run your code from **/jupyter-workspace/private** use private folder to develop and store your code NOT DATA or OUTPUTs 
 * all paths to exploit installed softwares, and condor queues since realese v17, are configured by dafault. A personal setup can be configured editing the file **/jupyter-workspace/cloud-storage/USERNAME/.bashrc** (example git personal config)
+
+# Tips and tricks
+## ROOT setup to open ROOT files on cloud from remote
+It is possible to remotely open files which are stored on the INFN s3 cloud storage without the need to download them.
+For example, from the ROOT prompt line a file can be opened as: 
+```
+TFile *f= TFile::Open("https://s3.cloud.infn.it/v1/AUTH_2ebf769785574195bde2ff418deac08a/cygno-analysis/RECO/Winter22/reco_run04469_3D.root")
+```
+To be able to do so, ROOT needs to be configured to read Davix protocols at building time.
+To build ROOT from source, follow [ROOT building from source](https://root.cern/install/build_from_source/).
+To enable the Davix interface, during the cmake preparation of the build (at the moment 6/10/2023, it is point 3 of the guide just mentioned), add the the options ```-Dbuiltin_davix=ON -Ddavix=ON```.
+The command to write from the <builddir> (notation identical to the one used in [ROOT building from source](https://root.cern/install/build_from_source/)) may look something like
+```
+cmake -DCMAKE_INSTALL_PREFIX=<installdir> -Dbuiltin_davix=ON -Ddavix=ON <sourcedir> 
+```
+The -Ddavix=ON may not be necessary, but it was not tested without. Any other additional option your specific build may require must be added on the same line.
+Continue the ROOT build as described on the provided link and ROOT files will be opened remotely.
+
+If you already have a Davix package installed in your system, it should be enough to just add the ```-Ddavix=ON``` option. However, the printed result of the cmake command must be checked, since cmake looks for a Davix package, but if for any reason a package is not found, it does not raise an error. Thus, the build of ROOT will be successfull, but the user will not be able to open ROOT files from remote.
