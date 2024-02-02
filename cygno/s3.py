@@ -270,3 +270,27 @@ def obj_rm(filename, tag, bucket='cygno-sim', session="infncloud-iam", verbose=F
             logging.error(e)
             return False
     return False
+
+
+def get_s3_sts(client_id, client_secret, endpoint_url, session_token):
+    # Specify the session token, access key, and secret key received from the STS
+    import boto3
+    sts_client = boto3.client('sts',
+            endpoint_url = endpoint_url,
+            region_name  = ''
+            )
+
+    response_sts = sts_client.assume_role_with_web_identity(
+            RoleArn          = "arn:aws:iam:::role/S3AccessIAM200",
+            RoleSessionName  = 'cygno',
+            DurationSeconds  = 3600,
+            WebIdentityToken = session_token # qua ci va il token IAM
+            )
+
+    s3 = boto3.client('s3',
+            aws_access_key_id     = response_sts['Credentials']['AccessKeyId'],
+            aws_secret_access_key = response_sts['Credentials']['SecretAccessKey'],
+            aws_session_token     = response_sts['Credentials']['SessionToken'],
+            endpoint_url          = endpoint_url,
+            region_name           = '')
+    return s3

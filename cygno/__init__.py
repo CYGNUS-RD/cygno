@@ -424,7 +424,7 @@ def ped_(run, path='./ped/', tag = 'LAB', posix=False, min_image_to_read = 0, ma
         # i file non esistono crea il file delle medie e delle sigma per ogni pixel dell'immagine
         if verbose: print (">>> Pedestal Maker! <<<")
         try:
-            cfile = open_(run, tag='LAB', posix=posix, verbose=verbose)
+            cfile = open_(run, tag=tag, posix=posix, verbose=verbose)
         except:
             raise myError("openRunError: "+str(run))
         if max_image_to_read == 0:
@@ -536,15 +536,19 @@ def ped_mid(run, path_file='/s3/cygno-data/', path_ped='./ped/', tag = 'LNGS',
 ###
 # log book
 ###
-def read_cygno_logbook(sql=True, verbose=False):
+def read_cygno_logbook(sql=True, tag='lngs', start_run=0, end_run=100000000, verbose=False):
     import pandas as pd
     import numpy as np
     import requests
     if sql:
-        url = "http://lnf.infn.it/~mazzitel/php/cygno_sql_query.php"
-        r = requests.get(url, verify=False)
-        df = pd.read_json(url)
-        columns = ["varible", "value"]       
+        url = "http://lnf.infn.it/~mazzitel/php/cygno_sql_query.php?site="+tag+"&start="+str(start_run)+"&end="+str(end_run)
+        if verbose: print ('url: ', url)
+        try:
+            r = requests.get(url, verify=False)
+            df = pd.read_json(url)
+            columns = ["varible", "value"]
+        except:
+            df = pd.DataFrame([])
     else:
         key="1y7KhjmAxXEgcvzMv9v3c0u9ivZVylWp7Z_pY3zyL9F8" # Log Book
         url_csv_file = "https://docs.google.com/spreadsheet/ccc?key="+key+"&output=csv"
@@ -569,11 +573,11 @@ def read_cygno_logbook(sql=True, verbose=False):
         if verbose: print ('Variables: ', df.columns.values)
     return df
 
-def run_info_logbook(run, sql=True, verbose=False):
-    dataInfo=read_cygno_logbook(sql=sql,verbose=verbose)
+def run_info_logbook(run, tag='lngs', sql=True, verbose=False):
+    dataInfo=read_cygno_logbook(sql=sql, tag=tag, start_run=run, end_run=run+1, verbose=verbose)
     if sql:
         #out = dataInfo[dataInfo['Run number']==run]
-        out = dataInfo[dataInfo['run_number']==run]
+        out = dataInfo
     else:
         out =  dataInfo[dataInfo.File_Number==str(run)]
     if verbose: print(out.values)
