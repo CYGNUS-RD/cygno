@@ -70,7 +70,7 @@ Two VM offer acces to cloud infrastrucure via web services based on jupyter note
  - cygno==v1.0.15
  - ephem==4.1.5
  - iminuit==2.16.0
-### Tag v1.0.23 ###
+### Tag v1.0.22 ###
  - Cytron
 ### Tag v1.0.21 ###
   - fix the INFN IAM bug limiting the access to the condor queue (no short coming are needed now)
