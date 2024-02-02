@@ -117,18 +117,23 @@ and availeble via web broser https://minio.cloud.infn.it/
 
 tool to show SQL runs infromation stored in the logbook
 
-	Usage: cygno_runs        [-ajv] run number
+Usage: cygno_runs        [-jsetv] run number
 
-	Options:
-	  -h, --help     show this help message and exit
-	  -a, --all      all runs in DBs;
-	  -j, --json     json output;
-	  -v, --verbose  verbose output;
+Options:
+  -h, --help            show this help message and exit
+  -j, --json            json output;
+  -g, --google          old google sheet;
+  -t TAG, --tag=TAG     tag [lngs](lnf/man)]
+  -s START_RUN, --start_run=START_RUN
+                        start run [0]
+  -e END_RUN, --end_run=END_RUN
+                        end run [100000000]
+  -v, --verbose         verbose output;
 		
 example:
 
-	cygno_runs 368 -j (new logbook json output)
-	cygno_runs -a (dump all the dadabase)
+	cygno_runs 368 -j (retrive data for run 368 from lngs db in json format)
+	cygno_runs -s 368 -e 388 -t man (dump info from run 268 to run 388 for mango data in text formt)
 	
 HTTP access
 	
@@ -212,8 +217,8 @@ class cfile:
 main and sigma imege of pedestal runs
 
 ### logbook 
-* 1.0.1 **read_cygno_logbook(verbose=False)**:ruturn pandas db old google sheet logbook info
-* 1.0.1 **run_info_logbook(run, sql=True, verbose=True)**:return pandas db google/sql run [int] info
+* 1.0.2 **read_cygno_logbook(sql=True, tag='lngs', start_run=0, end_run=100000000, verbose=False)**:ruturn pandas db old google sheet logbook info
+* 1.0.2 **run_info_logbook(run, tag='lngs', sql=True, verbose=False)**:return pandas db google/sql run [int] info
 
 ### s3 repo
 * 1.0.1 **s3.root_file(run, tag='LAB', posix=False, verbose=False)**: read root file from s3 CYGNO baket
