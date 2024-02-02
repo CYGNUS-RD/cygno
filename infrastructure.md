@@ -66,6 +66,12 @@ Two VM offer acces to cloud infrastrucure via web services based on jupyter note
 * the web inteface offer the possibility to run a specific software configuration. In general:
   * tag [dodas](https://github.com/DODAS-TS/dodas-docker-images) realises are the official one and approved by INFN
   * tag [gmazzitelli](https://github.com/gmazzitelli/dodas-docker-images) are realisesed fork of official project our project
+### Tag v1.0.23 ###
+ - cygno==v1.0.15
+ - ephem==4.1.5
+ - iminuit==2.16.0
+### Tag v1.0.23 ###
+ - Cytron
 ### Tag v1.0.21 ###
   - fix the INFN IAM bug limiting the access to the condor queue (no short coming are needed now)
   - vim cli editor is available.
