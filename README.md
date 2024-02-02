@@ -117,18 +117,18 @@ and availeble via web broser https://minio.cloud.infn.it/
 
 tool to show SQL runs infromation stored in the logbook
 
-Usage: cygno_runs        [-jsetv] run number
-
-Options:
-  -h, --help            show this help message and exit
-  -j, --json            json output;
-  -g, --google          old google sheet;
-  -t TAG, --tag=TAG     tag [lngs](lnf/man)]
-  -s START_RUN, --start_run=START_RUN
-                        start run [0]
-  -e END_RUN, --end_run=END_RUN
-                        end run [100000000]
-  -v, --verbose         verbose output;
+	Usage: cygno_runs        [-jsetv] run number
+	
+	Options:
+	  -h, --help            show this help message and exit
+	  -j, --json            json output;
+	  -g, --google          old google sheet;
+	  -t TAG, --tag=TAG     tag [lngs](lnf/man)]
+	  -s START_RUN, --start_run=START_RUN
+	                        start run [0]
+	  -e END_RUN, --end_run=END_RUN
+	                        end run [100000000]
+	  -v, --verbose         verbose output;
 		
 example:
 
