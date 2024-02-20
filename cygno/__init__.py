@@ -209,6 +209,8 @@ class dgtz_header:      # very simple class for the dgtz header
         self.offsets             = a[5]
         self.TTT                 = a[6]
         self.SIC                 = a[7]
+        self.nBoards             = a[8]
+        self.boardNames          = a[9]
         
         self.itemDict = {}
         self.itemDict["0"] = self.ntriggers
@@ -219,6 +221,8 @@ class dgtz_header:      # very simple class for the dgtz header
         self.itemDict["5"] = self.offsets
         self.itemDict["6"] = self.TTT
         self.itemDict["7"] = self.SIC
+        self.itemDict["8"] = self.nBoards
+        self.itemDict["9"] = self.boardNames
     
     def __getitem__(self, index):
         return self.itemDict[str(int(index))]
@@ -263,7 +267,7 @@ def daq_dgz_full2header(bank, verbose=False):
             ich+=1
             channels_offset_tmp[ichannels] = bank.data[ich]
         if verbose:
-            print ("cannaels_offset: ", channels_offset_tmp, flush=True)
+            print ("channels_offset: ", channels_offset_tmp, flush=True)
         channels_offset.append(channels_offset_tmp)
         
         ######### TTT reading:
@@ -284,58 +288,79 @@ def daq_dgz_full2header(bank, verbose=False):
             channels_SIC.append(channels_SIC_tmp)
                 
     full_header = dgtz_header([number_events, number_channels, number_samples, vertical_resulution, 
-                              sampling_rate, channels_offset, channels_ttt, channels_SIC])
+                              sampling_rate, channels_offset, channels_ttt, channels_SIC, nboard, name_board])
     return full_header
 
 def daq_dgz_full2array(bank, header, verbose=False, corrected=True, ch_offset=[], tag='LNGS'):
-    waveform_f = []
+
+    if verbose: print("There are {} boards, and they are {}".format(header.nBoards, header.boardNames))
+
     data_offset = 0
-    
     channels_to_correct = 8 # FOR NOW WE CORRECT ONLY THE FIRST 8 CHANNELS
-    
-    ######### Acquiring the "fast digitizer" data 
-    number_events   = header[0][0]
-    number_channels = header[1][0]
-    number_samples  = header[2][0]
-    SIC = header.SIC
-    to_correct=[]
-    
-    if not corrected:
-        for ch in range(channels_to_correct):
-            if ch_offset[ch]<-0.25 and ch_offset[ch]>-0.35:
-                to_correct.append(ch)
-    
-        if number_events!=len(SIC[0]):       ## Check if the start index cell passed are right
-            raise myError("Number of events does not match")
-    
-    for ievent in range(number_events):       
-        for ichannels in range(number_channels):
-            if verbose:
-                print ("data_offset, data_offset+number_samples",
-                       data_offset, data_offset+number_samples)
-                print(bank.data[data_offset:data_offset+number_samples])
 
-            waveform_f.append(bank.data[data_offset:data_offset+number_samples])
-            data_offset += number_samples
-    if not corrected:              ## Correcting the wavefoms (only the ones with offset at -0.3 of first 8 channels)
-        waveform_f = correct_waveforms(waveform_f, SIC[0], number_channels, to_correct=to_correct, tag=tag)
-
-    ######### Acquiring the "slow digitizer" data
-    number_events   = header[0][1]
-    number_channels = header[1][1]
-    number_samples  = header[2][1]
+    waveform_f = []
     waveform_s = []
-    for ievent in range(number_events):       
-        for ichannels in range(number_channels):
-            if verbose:
-                print ("data_offset, data_offset+number_samples",
-                       data_offset, data_offset+number_samples)
-                print(bank.data[data_offset:data_offset+number_samples])
 
-            waveform_s.append(bank.data[data_offset:data_offset+number_samples])
-            data_offset += number_samples
-    if verbose:
-        print(number_channels, number_events, number_channels)
+    for digitizer in header.boardNames:
+
+        ## Acquiring the "fast digitizer" data
+        if str(digitizer) == '1742':  
+
+            number_events   = header[0][0]
+            number_channels = header[1][0]
+            number_samples  = header[2][0]
+            SIC = header.SIC
+            to_correct=[]
+            
+            if not corrected:
+                for ch in range(channels_to_correct):
+                    if ch_offset[ch]<-0.25 and ch_offset[ch]>-0.35:
+                        to_correct.append(ch)
+            
+                if number_events!=len(SIC[0]):       ## Check if the start index cell passed are right
+                    raise myError("Number of events does not match")
+            
+            for ievent in range(number_events):       
+                for ichannels in range(number_channels):
+                    if verbose:
+                        print ("data_offset, data_offset+number_samples",
+                            data_offset, data_offset+number_samples)
+                        print(bank.data[data_offset:data_offset+number_samples])
+
+                    waveform_f.append(bank.data[data_offset:data_offset+number_samples])
+                    data_offset += number_samples
+
+            if not corrected:              ## Correcting the wavefoms (only the ones with offset at -0.3 of first 8 channels)
+                waveform_f = correct_waveforms(waveform_f, SIC[0], number_channels, to_correct=to_correct, tag=tag)
+            
+            if verbose:
+                print(number_channels, number_events, number_channels)
+        
+        ## Acquiring the "slow digitizer" data
+        elif str(digitizer) == '1720':  
+
+            number_events   = header[0][1]
+            number_channels = header[1][1]
+            number_samples  = header[2][1]
+            waveform_s = []
+            for ievent in range(number_events):       
+                for ichannels in range(number_channels):
+                    if verbose:
+                        print ("data_offset, data_offset+number_samples",
+                            data_offset, data_offset+number_samples)
+                        print(bank.data[data_offset:data_offset+number_samples])
+
+                    waveform_s.append(bank.data[data_offset:data_offset+number_samples])
+                    data_offset += number_samples
+            if verbose:
+                print(number_channels, number_events, number_channels)
+
+        ## If a new digitizer is added to the DAQ, add its readout here
+        # elif str(digitizer) == 'XXXX': 
+
+        else:
+            raise myError("You seem to be trying to use a new digitizer model. You need to update the cygno libs for that.")
+
     return waveform_f, waveform_s
 
 def daq_slow2array(bank, verbose=False):
