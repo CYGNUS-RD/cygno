@@ -51,6 +51,13 @@ else: raise myError('table_cell_LNF.npy not found')
 if(os.path.exists(__table_path__+'table_nsample_LNF.npy')):
     __table_nsample_LNF__ = np.load(__table_path__+'table_nsample_LNF.npy')
 else: raise myError('table_nsample_LNF.npy not found')
+# MAN
+if(os.path.exists(__table_path__+'table_cell_MAN.npy')):
+    __table_cell_MAN__ = np.load(__table_path__+'table_cell_MAN.npy')
+else: raise myError('table_cell_MAN.npy not found')
+if(os.path.exists(__table_path__+'table_nsample_MAN.npy')):
+    __table_nsample_MAN__ = np.load(__table_path__+'table_nsample_MAN.npy')
+else: raise myError('table_nsample_MAN.npy not found')
 
 
 
@@ -801,6 +808,9 @@ def correct_waveforms(wfs_in, SIC, nChannels=32, to_correct=list(range(8)), tag=
     elif tag=='LNF':
         table_cell = __table_cell_LNF__
         table_nsample = __table_nsample_LNF__
+    elif tag=='MAN':
+        table_cell = __table_cell_MAN__
+        table_nsample = __table_nsample_MAN__
     else: raise myError("Tag not understood.")
         
     wfs = np.copy(wfs_in)
