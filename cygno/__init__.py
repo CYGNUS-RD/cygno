@@ -301,6 +301,10 @@ def daq_dgz_full2array(bank, header, verbose=False, corrected=True, ch_offset=[]
     waveform_f = []
     waveform_s = []
 
+    '''
+    Given the way the header is created in 'daq_dgz_full2header',
+    the following routine works ONLY if the digitizer are in a specific order: 
+    1st: Fast;  2nd: Slow '''
     for digitizer in header.boardNames:
 
         ## Acquiring the "fast digitizer" data
