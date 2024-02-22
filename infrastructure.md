@@ -46,7 +46,7 @@ Moreover, computing resources are available at LNF and LNGS (Cygno VM login and 
 Data collected by the experiment DAQ are automatically pushed on INFN [S3 cloud](https://it.wikipedia.org/wiki/Amazon_S3) storage. The storage data and the experiment area for analysis and simulation can be acces and manage via: 
 
 * Web Tool: https://minio.cloud.infn.it/minio/login
-* Cloud CYGNO web interfaces tool: https://notebook.cygno.cloud.infn.it:8888/, https://notebook02.cygno.cloud.infn.it:8888/
+* Cloud CYGNO web interfaces tool: https://notebook.cygno.cloud.infn.it/, https://notebook02.cygno.cloud.infn.it/
 * CLI tool: https://github.com/CYGNUS-RD/cygno#cygno-cli-tool-cygno_repo
 * https://s3.cloud.infn.it/v1/AUTH_2ebf769785574195bde2ff418deac08a/bucket-name/tag/file-name
 
@@ -60,9 +60,9 @@ the cloud-storage/ contain tree backet:
 ### Usage of the CYGNO notebook web interface and Cloud services
 Two VM offer acces to cloud infrastrucure via web services based on jupyter notebook interface
 * production: 
-  - CYGNO notebook 01 https://notebook.cygno.cloud.infn.it:8888/ ([16 CPU](https://novabench.com/parts/cpu/intel-core-broadwell-ibrs)/32 GB); [usage monitor](https://90.147.174.175:3000/login)
-  - CYGNO notebook 02 https://notebook02.cygno.cloud.infn.it:8888/ (16 CPU/32 GB);
-* test environment https://192.135.24.159:8888/ ([8 CPU](https://www.intel.it/content/www/it/it/products/platforms/details/cascade-lake.html)/16 GB); [usage monitor](https://192.135.24.159:3000)
+  - CYGNO notebook 01 https://notebook.cygno.cloud.infn.it/ ([16 CPU](https://novabench.com/parts/cpu/intel-core-broadwell-ibrs)/32 GB); [usage monitor](https://90.147.174.175:3000/login)
+  - CYGNO notebook 02 https://notebook02.cygno.cloud.infn.it/ (16 CPU/32 GB);
+* test environment https://192.135.24.159/ ([8 CPU](https://www.intel.it/content/www/it/it/products/platforms/details/cascade-lake.html)/16 GB); [usage monitor](https://192.135.24.159:3000)
 * the web inteface offer the possibility to run a specific software configuration. In general:
   * tag [dodas](https://github.com/DODAS-TS/dodas-docker-images) realises are the official one and approved by INFN
   * tag [gmazzitelli](https://github.com/gmazzitelli/dodas-docker-images) are realisesed fork of official project our project
