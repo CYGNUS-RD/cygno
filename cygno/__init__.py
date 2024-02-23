@@ -209,9 +209,14 @@ class dgtz_header:      # very simple class for the dgtz header
         self.offsets             = a[5]
         self.TTT                 = a[6]
         self.SIC                 = a[7]
-        self.nBoards             = a[8]
-        self.boardNames          = a[9]
-        
+        if len(a)>8:
+            self.nBoards         = a[8]
+            self.boardNames      = a[9]
+        else:
+            self.nBoards        = 1
+            self.boardNames     = [1742]
+            print('WARNING: You are using an older version of the data bank. The analysis of the digitizers might be incomplete.')
+
         self.itemDict = {}
         self.itemDict["0"] = self.ntriggers
         self.itemDict["1"] = self.nchannels
