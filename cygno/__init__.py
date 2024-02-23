@@ -301,18 +301,14 @@ def daq_dgz_full2array(bank, header, verbose=False, corrected=True, ch_offset=[]
     waveform_f = []
     waveform_s = []
 
-    '''
-    Given the way the header is created in 'daq_dgz_full2header',
-    the following routine works ONLY if the digitizer are in a specific order: 
-    1st: Fast;  2nd: Slow '''
-    for digitizer in header.boardNames:
+    for idigi,digitizer in enumerate(header.boardNames):
 
         ## Acquiring the "fast digitizer" data
         if str(digitizer) == '1742':  
 
-            number_events   = header[0][0]
-            number_channels = header[1][0]
-            number_samples  = header[2][0]
+            number_events   = header[0][idigi]
+            number_channels = header[1][idigi]
+            number_samples  = header[2][idigi]
             SIC = header.SIC
             to_correct=[]
             
@@ -343,9 +339,9 @@ def daq_dgz_full2array(bank, header, verbose=False, corrected=True, ch_offset=[]
         ## Acquiring the "slow digitizer" data
         elif str(digitizer) == '1720':  
 
-            number_events   = header[0][1]
-            number_channels = header[1][1]
-            number_samples  = header[2][1]
+            number_events   = header[0][idigi]
+            number_channels = header[1][idigi]
+            number_samples  = header[2][idigi]
             waveform_s = []
             for ievent in range(number_events):       
                 for ichannels in range(number_channels):
@@ -358,9 +354,6 @@ def daq_dgz_full2array(bank, header, verbose=False, corrected=True, ch_offset=[]
                     data_offset += number_samples
             if verbose:
                 print(number_channels, number_events, number_channels)
-
-        ## If a new digitizer is added to the DAQ, add its readout here
-        # elif str(digitizer) == 'XXXX': 
 
         else:
             raise myError("You seem to be trying to use a new digitizer model. You need to update the cygno libs for that.")
