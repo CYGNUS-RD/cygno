@@ -575,7 +575,7 @@ def read_cygno_logbook(sql=True, tag='lngs', start_run=0, end_run=100000000, ver
     import numpy as np
     import requests
     if sql:
-        url = "http://lnf.infn.it/~mazzitel/php/cygno_sql_query.php?site="+tag+"&start="+str(start_run)+"&end="+str(end_run)
+        url = "https://notebook.cygno.cloud.infn.it/cygno_sql_query.php?site="+tag+"&start="+str(start_run)+"&end="+str(end_run)
         if verbose: print ('url: ', url)
         try:
             r = requests.get(url, verify=False)
