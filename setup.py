@@ -7,7 +7,7 @@ setup(
     name='cygno',                                            # package name
     author="Giovanni Mazzitelli",
     author_email="giovanni.mazzitelli@lnf.infn.it",
-    version='1.0.16',                                         # version
+    version='1.0.17',                                         # version
     description='Cygno Experiment Python Packge',            # short description
     url='https://github.com/CYGNUS-RD/cygno',                # package URL
     packages=find_packages(),
