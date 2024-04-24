@@ -140,10 +140,18 @@ def open_(run, tag='LAB', posix=False, verbose=False):
         f = open_root(run, path=path,  cloud=posix,  tag=tag, verbose=False)
     return f
 
-def daq_cam2array(bank, verbose=False):
-    shape_x_image = shape_y_image = int(np.sqrt(bank.size_bytes*8/16))
-    image = np.reshape(bank.data, (shape_x_image, shape_y_image))
-    return image, shape_x_image, shape_y_image
+def daq_cam2array(bank):
+    test_size=bank.size_bytes/10616832      #10616832=2*5308416   5308416=2304*2304 and 8/16=1/2 (banksize in bytes*8 returns the bits and divided by the 16 bit adc gives the total amount of pixels)
+    if test_size<1.1:
+        #Fusion,Flash
+        shapex = shapey = int(np.sqrt(bank.size_bytes/2))
+    else:
+        #Quest
+        shapex=4096
+        shapey=2304
+
+    image = np.reshape(bank.data, (shapey, shapex))
+    return image, shapex, shapey
 
 def get_bor_odb(mfile): # function to acquire the begin of run ODB entries from the midas file
     try:
