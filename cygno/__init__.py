@@ -1014,9 +1014,9 @@ def daq_read_runlog_replica_status(connection, run_number, storage, verbose=Fals
                      colum_element=storage, 
                      verbose=verbose)
 
-def daq_not_on_tape_runs(connection, verbose=False):
+def daq_not_on_tape_runs(connection, days=30, verbose=False):
     import numpy as np
-    sql = "SELECT * FROM `Runlog` WHERE DATEDIFF(CURRENT_TIMESTAMP, start_time) < 30 \
+    sql = "SELECT * FROM `Runlog` WHERE DATEDIFF(CURRENT_TIMESTAMP, start_time) < "+str(days)+" \
     AND `storage_tape_status` < 1 AND `storage_cloud_status` = 1;"
     mycursor = connection.cursor()
     mycursor.execute(sql)
