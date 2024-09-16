@@ -8,16 +8,17 @@ if [ "$in" == "tier1" ] || [ "$in" == "-t" ]; then
     unset OIDC_SOCK; unset OIDCD_PID; eval `oidc-keychain` > /dev/null
 
     eval oidc-agent-service use > /dev/null
+#    if [ `oidc-add -a | grep ${OIDC_AGENT_HTC}` == ${OIDC_AGENT_HTC} ]; then
     oidc-gen --pw-cmd="echo ${OIDC_AGENT_HTC}" -w device --issuer ${IAM_SERVER_HTC} --scope='openid compute.create offline_access profile compute.read compute.cancel compute.modify wlcg wlcg.groups' ${OIDC_AGENT_HTC} 
 
     export IAM_CLIENT_ID_HTC=`oidc-gen --pw-cmd='echo ${OIDC_AGENT_HTC}' -p ${OIDC_AGENT_HTC} | python3 -c "import sys, json; print(json.load(sys.stdin)['client_id'])"`
     export IAM_CLIENT_SECRET_HTC=`oidc-gen --pw-cmd='echo ${OIDC_AGENT_HTC}' -p ${OIDC_AGENT_HTC} | python3 -c "import sys, json; print(json.load(sys.stdin)['client_secret'])"`
     export REFRESH_TOKEN_HTC=`oidc-gen --pw-cmd='echo ${OIDC_AGENT_HTC}' -p ${OIDC_AGENT_HTC} | python3 -c "import sys, json; print(json.load(sys.stdin)['refresh_token'])"`
 
-    # # oidc-add ${OIDC_AGENT} 
+    oidc-add ${OIDC_AGENT_HTC} --pw-cmd="echo ${OIDC_AGENT_HTC}" 
     # # crontab -l | { cat; echo "*/10 * * * * eval \`oidc-keychain\` && echo \`oidc-token $OIDC_AGENT \` > /tmp/token"; } | crontab -
     # echo "Configuring queue..."
-    # # oidc-gen  ${OIDC_AGENT} --reauthenticate  --pw-cmd='echo ${OIDC_AGENT_HTC}'
+    # # oidc-gen  ${OIDC_AGENT_HTC} --reauthenticate  --pw-cmd='echo ${OIDC_AGENT_HTC}'
     umask 0077 ; oidc-token ${OIDC_AGENT_HTC}  > ${HOME}/.token
     export BEARER_TOKEN=$(oidc-token ${OIDC_AGENT_HTC})
     export _condor_SEC_CLIENT_AUTHENTICATION_METHODS=SCITOKENS
@@ -37,6 +38,6 @@ elif [ "$in" == "-q" ]; then
         condor_q -pool ce02-htc.cr.cnaf.infn.it:9619 -name ce02-htc.cr.cnaf.infn.it
     fi
 else
-    echo "Usage: tier1/cloud switch betwen htc@tier1 and htc on cloud" 
-    echo "monitor to show condor_q (daefault ce ce02-htc.cr.cnaf.infn.it)"
+    echo "Usage: tier1 [-t]/cloud [-c] configure/switch between htc@tier1 and htc@cloud" 
+    echo "monitor to show condor_q [-q] (daefault ce ce02-htc.cr.cnaf.infn.it)"
 fi
