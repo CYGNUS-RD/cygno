@@ -4,8 +4,37 @@ from boto3sts import credentials as creds
 import pandas as pd
 import os
 
-aws_session = creds.assumed_session("dodas")
-s3 = aws_session.client('s3', endpoint_url="https://minio.cloud.infn.it/",  config=boto3.session.Config(signature_version='s3v4'),verify=True)
+ba = True
+if ba:
+    aws_session = boto3.session.Session(
+        aws_access_key_id=os.environ.get('BA_ACCESS_KEY_ID'),
+        aws_secret_access_key=os.environ.get('BA_SECRET_ACCESS_KEY')
+    )
+
+    s3r = aws_session.resource('s3', endpoint_url="https://swift.recas.ba.infn.it/",
+                              config=boto3.session.Config(signature_version='s3v4'),verify=True)
+    
+    s3 = aws_session.client('s3', endpoint_url="https://swift.recas.ba.infn.it/",
+                            config=boto3.session.Config(signature_version='s3v4'),verify=True)
+else:
+    aws_session = creds.assumed_session("dodas")
+    s3r = aws_session.resource('s3', endpoint_url="https://minio.cloud.infn.it/",
+                              config=boto3.session.Config(signature_version='s3v4'),verify=True)
+    s3 = aws_session.client('s3', endpoint_url="https://minio.cloud.infn.it/",
+                            config=boto3.session.Config(signature_version='s3v4'),verify=True)
+
+for bucket in s3r.buckets.all():
+    print("-->",bucket.name)
+    try:
+        response = s3.list_objects(Bucket=bucket.name)['Contents']
+        #print(response)
+        for i, file in enumerate(response):
+            print('{:s} {:} {:.3f} GB'.format(file['Key'], file['LastModified'], file['Size']/(1024)**3))
+    except:
+        print('empty bucket or error')
+# s3.create_bucket(Bucket='cygno-data')
+# for bucket in s3r.buckets.all():
+#     print("-->",bucket.name)
 
 
 # boto3.set_stream_logger(name='botocore')
@@ -27,12 +56,11 @@ s3 = aws_session.client('s3', endpoint_url="https://minio.cloud.infn.it/",  conf
 #         aws_session_token = response['Credentials']['SessionToken'],
 #         endpoint_url="https://rgw.cloud.infn.it:443")
 
-response = s3.list_objects(Bucket='cygno-data')['Contents']
 
+# response = s3.list_objects(Bucket='cygno-data')['Contents']
 
-
-for i, file in enumerate(response):
-    print(file['Key'], file['LastModified'])
+# for i, file in enumerate(response):
+#     print(file['Key'], file['LastModified'])
     
 
 #file_db = pd.read_json(file_list)

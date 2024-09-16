@@ -32,6 +32,12 @@ def append2file(line, filein):
     command = 'echo '+ line + ' >> '+filein
     return os.system(command)
 
+def url2file(url, fileout):
+    import requests
+    r = requests.get(url)
+    with open(fileout, 'wb') as f:
+        f.write(r.content)
+
 def reporthook(blocknum, blocksize, totalsize, verbose=True):
     import sys
     readsofar = blocknum * blocksize
