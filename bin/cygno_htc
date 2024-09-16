@@ -8,7 +8,7 @@ if [ "$in" == "tier1" ] || [ "$in" == "-t" ]; then
     unset OIDC_SOCK; unset OIDCD_PID; eval `oidc-keychain` > /dev/null
 
     eval oidc-agent-service use > /dev/null
-#    if [ `oidc-add -a | grep ${OIDC_AGENT_HTC}` == ${OIDC_AGENT_HTC} ]; then
+    
     oidc-gen --pw-cmd="echo ${OIDC_AGENT_HTC}" -w device --issuer ${IAM_SERVER_HTC} --scope='openid compute.create offline_access profile compute.read compute.cancel compute.modify wlcg wlcg.groups' ${OIDC_AGENT_HTC} 
 
     export IAM_CLIENT_ID_HTC=`oidc-gen --pw-cmd='echo ${OIDC_AGENT_HTC}' -p ${OIDC_AGENT_HTC} | python3 -c "import sys, json; print(json.load(sys.stdin)['client_id'])"`
@@ -19,8 +19,12 @@ if [ "$in" == "tier1" ] || [ "$in" == "-t" ]; then
     # # crontab -l | { cat; echo "*/10 * * * * eval \`oidc-keychain\` && echo \`oidc-token $OIDC_AGENT \` > /tmp/token"; } | crontab -
     # echo "Configuring queue..."
     # # oidc-gen  ${OIDC_AGENT_HTC} --reauthenticate  --pw-cmd='echo ${OIDC_AGENT_HTC}'
-    umask 0077 ; oidc-token ${OIDC_AGENT_HTC}  > ${HOME}/.token
-    export BEARER_TOKEN=$(oidc-token ${OIDC_AGENT_HTC})
+#    umask 0077 ; oidc-token ${OIDC_AGENT_HTC}  > ${HOME}/.token
+#    export BEARER_TOKEN=$(oidc-token ${OIDC_AGENT_HTC})
+    RESPONSE="$(curl -s -u ${IAM_CLIENT_ID_HTC}:${IAM_CLIENT_SECRET_HTC} -d grant_type=refresh_token -d refresh_token=${REFRESH_TOKEN_HTC} ${IAM_SERVER_HTC}/token)" 
+    TOKEN=`echo $RESPONSE | python3 -c "import sys, json; print(json.load(sys.stdin)['access_token'])"`
+    export BEARER_TOKEN=$TOKEN
+    umask 0077 ; echo $TOKEN>${HOME}/.token
     export _condor_SEC_CLIENT_AUTHENTICATION_METHODS=SCITOKENS
     export CONDOR_CONFIG=/dev/null
 elif [ "$in" == "cloud" ] || [ "$in" == "-c" ]; then 
