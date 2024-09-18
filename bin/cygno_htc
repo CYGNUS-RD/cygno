@@ -1,12 +1,17 @@
 #!/bin/sh
-in=`echo "$1" | tr '[:upper:]' '[:lower:]'`
+
+args=("$@")
+
+in=`echo ${args[0]} | tr '[:upper:]' '[:lower:]'`
 export OIDC_AGENT_HTC="htc"
 export IAM_SERVER_HTC=https://iam-cygno.cloud.cnaf.infn.it/
+declare -a CEIPS=('ce01-htc.cr.cnaf.infn.it' 'ce02-htc.cr.cnaf.infn.it' 'ce03-htc.cr.cnaf.infn.it' 'ce04-htc.cr.cnaf.infn.it' 'ce05-htc.cr.cnaf.infn.it' 'ce06-htc.cr.cnaf.infn.it' 'ce07-htc.cr.cnaf.infn.it')
+
+
 if [ "$in" == "tier1" ] || [ "$in" == "-t" ]; then
     echo "Enabling htc@tier1"
 
     unset OIDC_SOCK; unset OIDCD_PID; eval `oidc-keychain` > /dev/null
-
     eval oidc-agent-service use > /dev/null
     
     oidc-gen --pw-cmd="echo ${OIDC_AGENT_HTC}" -w device --issuer ${IAM_SERVER_HTC} --scope='openid compute.create offline_access profile compute.read compute.cancel compute.modify wlcg wlcg.groups' ${OIDC_AGENT_HTC} 
@@ -16,15 +21,12 @@ if [ "$in" == "tier1" ] || [ "$in" == "-t" ]; then
     export REFRESH_TOKEN_HTC=`oidc-gen --pw-cmd='echo ${OIDC_AGENT_HTC}' -p ${OIDC_AGENT_HTC} | python3 -c "import sys, json; print(json.load(sys.stdin)['refresh_token'])"`
 
     oidc-add ${OIDC_AGENT_HTC} --pw-cmd="echo ${OIDC_AGENT_HTC}" 
-    # # crontab -l | { cat; echo "*/10 * * * * eval \`oidc-keychain\` && echo \`oidc-token $OIDC_AGENT \` > /tmp/token"; } | crontab -
-    # echo "Configuring queue..."
-    # # oidc-gen  ${OIDC_AGENT_HTC} --reauthenticate  --pw-cmd='echo ${OIDC_AGENT_HTC}'
-#    umask 0077 ; oidc-token ${OIDC_AGENT_HTC}  > ${HOME}/.token
-#    export BEARER_TOKEN=$(oidc-token ${OIDC_AGENT_HTC})
+
     RESPONSE="$(curl -s -u ${IAM_CLIENT_ID_HTC}:${IAM_CLIENT_SECRET_HTC} -d grant_type=refresh_token -d refresh_token=${REFRESH_TOKEN_HTC} ${IAM_SERVER_HTC}/token)" 
     TOKEN=`echo $RESPONSE | python3 -c "import sys, json; print(json.load(sys.stdin)['access_token'])"`
     export BEARER_TOKEN=$TOKEN
     umask 0077 ; echo $TOKEN>${HOME}/.token
+
     export _condor_SEC_CLIENT_AUTHENTICATION_METHODS=SCITOKENS
     export CONDOR_CONFIG=/dev/null
 elif [ "$in" == "cloud" ] || [ "$in" == "-c" ]; then 
@@ -33,15 +35,21 @@ elif [ "$in" == "cloud" ] || [ "$in" == "-c" ]; then
     unset CONDOR_CONFIG
     unset _condor_SEC_CLIENT_AUTHENTICATION_METHODS
 elif [ "$in" == "-q" ]; then
+    if [ "$#" -gt 1 ]; then
+        idce=$[${args[1]}-1]
+        CEIP=${CEIPS[idce]}
+    else
+        CEIP=${CEIPS[1]}
+    fi
     if [ -z "$CONDOR_CONFIG" ]; then
         echo "htc@cloud"
         condor_q
 
     else
         echo "htc@tier1"
-        condor_q -pool ce02-htc.cr.cnaf.infn.it:9619 -name ce02-htc.cr.cnaf.infn.it
+        condor_q -pool $CEIP:9619 -name $CEIP
     fi
 else
     echo "Usage: tier1 [-t]/cloud [-c] configure/switch between htc@tier1 and htc@cloud" 
-    echo "monitor to show condor_q [-q] (daefault ce ce02-htc.cr.cnaf.infn.it)"
+    echo "monitor to show condor_q [-q] X (where X is teh ce number [1,2 - 7] daefault ce ce02-htc.cr.cnaf.infn.it)"
 fi
