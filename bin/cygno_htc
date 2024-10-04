@@ -41,7 +41,7 @@ elif [ "$in" == "--monitor" ] || [ "$in" == "-q" ]; then
     fi
     if [ -z "$CONDOR_CONFIG" ]; then
         echo "htc@cloud"
-        condor_q
+        condor_q -all
 
     else
         echo "htc@tier1"
