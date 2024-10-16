@@ -73,12 +73,26 @@ elif [ "$in" == "--tranfer" ] || [ "$in" == "-f" ]; then
         echo "htc@tier1"
         condor_transfer_data ${args[1]} -pool $CEIP:9619 -name $CEIP  
     fi
+elif [ "$in" == "--remove" ] || [ "$in" == "-r" ]; then
+    if [ "$#" -gt 2 ]; then
+        idce=$[${args[2]}-1]
+        CEIP=${CEIPS[idce]}
+    fi
+    if [ -z "$CONDOR_CONFIG" ]; then
+        echo "htc@cloud"
+        condor_rm ${args[1]}
+
+    else
+        echo "htc@tier1"
+        condor_rm ${args[1]} -pool $CEIP:9619 -name $CEIP  
+    fi
 elif [ "$in" == "--help" ] || [ "$in" == "-h" ] || [ -z "$in" ]; then
 #elif [ [ "$in" == "--help"] || [ "$in" == "-h"] || [ ! -z "$in"  ] ]; then
     echo "Usage:"
     echo "  -t/-c --tier1/--cloud, configure/switch between htc@tier1 and htc@cloud" 
     echo "  -s --submit, submit a job:  -s <subfilename> <ceid> [only for tier1 ceid=1-7 default ce02]"
     echo "  -f --tranfer, tranfer files: -f <jobid> <ceid> [only for tier1 ceid=1-7 default ce02]"
+    echo "  -r --remove, remove jobs: -r <jobid> <ceid> [only for tier1 ceid=1-7 default ce02]"
     echo "  -q --monitor, monitor jobs: -q <ceid> [only for tier1 ceid=1-7 default ce02]"
     echo "  -h --help, show this help"
 fi
