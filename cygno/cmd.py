@@ -38,7 +38,7 @@ def url2file(url, fileout):
     with open(fileout, 'wb') as f:
         f.write(r.content)
 
-def reporthook(blocknum, blocksize, totalsize, verbose=False):
+def reporthook(blocknum, blocksize, totalsize, verbose=True):
     import sys
     readsofar = blocknum * blocksize
     if totalsize > 0:
@@ -63,7 +63,10 @@ def cache_file(url, cachedir='/tmp/', verbose=False):
         if verbose: print("downloading: "+tmpname)
         if python_version().split('.')[0]=='3':
             from urllib.request import urlretrieve
-            urlretrieve(url, tmpname, reporthook(verbose=verbose))
+            if verbose:
+                urlretrieve(url, tmpname, reporthook)
+            else:
+                urlretrieve(url, tmpname)
 #             import urllib
 #             urllib.request.urlretrieve(url, tmpname, reporthook)
         else:
