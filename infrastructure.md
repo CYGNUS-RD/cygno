@@ -49,6 +49,7 @@ Data collected by the experiment DAQ are automatically pushed on INFN [S3 cloud]
 * Cloud CYGNO web interfaces tool: https://notebook.cygno.cloud.infn.it/, https://notebook02.cygno.cloud.infn.it/
 * CLI tool: https://github.com/CYGNUS-RD/cygno#cygno-cli-tool-cygno_repo
 * https://s3.cloud.infn.it/v1/AUTH_2ebf769785574195bde2ff418deac08a/bucket-name/tag/file-name
+* https://swift.recas.ba.infn.it/bucket-name/tag/file-name
 
 the cloud-storage/ contain tree backet:
 * cloud-data: daq stored data, read only
