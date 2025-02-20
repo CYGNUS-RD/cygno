@@ -3,12 +3,13 @@ import boto3
 from boto3sts import credentials as creds
 import pandas as pd
 import os
+from boto3.s3.transfer import TransferConfig
 
 ba = True
 if ba:
     aws_session = boto3.session.Session(
-        aws_access_key_id=os.environ.get('ba_access_key_id'),
-        aws_secret_access_key=os.environ.get('ba_secret_access_key')
+        aws_access_key_id=os.environ.get('BA_ACCESS_KEY_ID'),
+        aws_secret_access_key=os.environ.get('BA_SECRET_ACCESS_KEY')
     )
 
     s3r = aws_session.resource('s3', endpoint_url="https://swift.recas.ba.infn.it/",
@@ -46,8 +47,9 @@ for bucket in s3r.buckets.all():
 #         endpoint_url="https://rgw.cloud.infn.it:443")
 
 # response = s3.list_objects(Bucket='cygno-data')['Contents']
-
-s3.upload_file('./s3_list.py', Bucket="cygno-data", Key='s3_list.py')
+GB = 1024 ** 3
+config = TransferConfig(multipart_threshold=5*GB)
+s3.upload_file('./s3_list.py', Bucket="cygno-data", Key='s3_list.py', Config=config)
 # s3.upload_file('./s3_list.py', Bucket='cygno-analysis', Key='test/s3_list.py')
     
 
