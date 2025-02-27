@@ -3,7 +3,8 @@
 #
 
 BAKET_POSIX_PATH = '/jupyter-workspace/cloud-storage/'
-BAKET_REST_PATH = 'https://s3.cloud.infn.it/v1/AUTH_2ebf769785574195bde2ff418deac08a/'
+BUCKET_REST_PATH = 'https://s3.cloud.infn.it/v1/AUTH_2ebf769785574195bde2ff418deac08a/'
+BUCKET_REST_PATH_BARI = 'https://swift.recas.ba.infn.it/'
 
 def kb2valueformat(val):
     import numpy as np
@@ -39,20 +40,24 @@ def open_aws_session(session, number_of_try=3, wait=10, verbose=False):
 #         if run <= 4504:
 #             BASE_URL  = BAKET_POSIX_PATH+'cygno/Data/'
 #     else:
-#         BASE_URL  = BAKET_REST_PATH+'cygno-data/'
+#         BASE_URL  = BUCKET_REST_PATH+'cygno-data/'
 #         if run <= 4504:
-#             BASE_URL  =  BAKET_REST_PATH+'cygnus/Data/'
+#             BASE_URL  =  BUCKET_REST_PATH+'cygnus/Data/'
     
 #     file_root = (tag+'/histograms_Run%05d.root' % run)
 #     if verbose: print(BASE_URL+file_root)
 #     return BASE_URL+file_root
 
 
-def root_file(run, tag='LAB', cloud=False, verbose=False):
+def root_file(run, tag='LAB', cloud=False, Bari=False, verbose=False):
     if cloud:
-        BASE_URL  = BAKET_REST_PATH+'cygno-data/'
+        if Bari:
+            BASE_URL = BUCKET_REST_PATH_BARI+'cygno-data/'
+        else:
+            BASE_URL  = BUCKET_REST_PATH+'cygno-data/'
+            
         if run <= 4504:
-            BASE_URL  =  BAKET_REST_PATH+'cygnus/Data/'
+            BASE_URL  =  BUCKET_REST_PATH+'cygnus/Data/'
         f  = BASE_URL+(tag+'/histograms_Run%05d.root' % run)
     else:
         f = (tag+'/histograms_Run%05d.root' % run)
@@ -60,9 +65,12 @@ def root_file(run, tag='LAB', cloud=False, verbose=False):
     if verbose: print(f)
     return f
 
-def mid_file(run, tag='LNGS', cloud=False, verbose=False):
+def mid_file(run, tag='LNGS', cloud=False, Bari=False, verbose=False):
     if cloud:
-        BASE_URL  = BAKET_REST_PATH+'cygno-data/'
+        if Bari:
+            BASE_URL = BUCKET_REST_PATH_BARI+'cygno-data/'
+        else:
+            BASE_URL  = BUCKET_REST_PATH+'cygno-data/'
         f = BASE_URL+(tag+'/run%05d.mid.gz' % run)
     else:
         f = ('/run%05d.mid.gz' % run)

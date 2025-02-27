@@ -79,9 +79,9 @@ class cfile:
         self.x_resolution = x_resolution
         self.y_resolution = y_resolution
 
-def open_mid(run, path='/tmp/',  cloud=True,  tag='LNGS', verbose=False):
+def open_mid(run, path='/tmp/',  cloud=True,  Bari=False, tag='LNGS', verbose=False):
     import midas.file_reader
-    fname = s3.mid_file(run, tag=tag, cloud=cloud, verbose=verbose)
+    fname = s3.mid_file(run, tag=tag, cloud=cloud, Bari=Bari, verbose=verbose)
     if verbose: print(fname)
     if not cloud:
         if os.path.exists(path+tag+fname):
@@ -93,10 +93,10 @@ def open_mid(run, path='/tmp/',  cloud=True,  tag='LNGS', verbose=False):
         f = midas.file_reader.MidasFile(filetmp)  
     return f
 
-def open_root(run, path='/tmp/',  cloud=True,  tag='LAB', verbose=False):
+def open_root(run, path='/tmp/',  cloud=True,  Bari=False,  tag='LAB', verbose=False):
     import ROOT
     import root_numpy as rtnp
-    fname = s3.root_file(run, tag=tag, cloud=cloud, verbose=verbose)
+    fname = s3.root_file(run, tag=tag, cloud=cloud, Bari=Bari, verbose=verbose)
     if not cloud:
         fname=path+fname
     class cfile:
@@ -506,7 +506,7 @@ def ped_(run, path='./ped/', tag = 'LAB', posix=False, min_image_to_read = 0, ma
         return m_image, s_image  
     
 def ped_mid(run, path_file='/s3/cygno-data/', path_ped='./ped/', tag = 'LNGS', 
-            cloud=False, verbose=False):
+            cloud=False, Bari=False, verbose=False):
     #
     # run numero del run
     # path path lettura/scrittura piedistalli
@@ -534,7 +534,7 @@ def ped_mid(run, path_file='/s3/cygno-data/', path_ped='./ped/', tag = 'LNGS',
         # i file non esistono crea il file delle medie e delle sigma per ogni pixel dell'immagine
         if verbose: print (">>> Pedestal Maker! <<<")
         try:
-            mfile = open_mid(run=run, path=path_file, cloud=cloud, tag=tag, verbose=verbose)
+            mfile = open_mid(run=run, path=path_file, cloud=cloud, Bari=Bari, tag=tag, verbose=verbose)
         except:
             raise myError("openRunError: "+str(run))
             
