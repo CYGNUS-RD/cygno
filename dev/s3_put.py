@@ -4,8 +4,15 @@ from boto3sts import credentials as creds
 import pandas as pd
 import os
 from boto3.s3.transfer import TransferConfig
+ba = False
+from optparse import OptionParser
+parser = OptionParser(usage='usage: %prog\t [-ubsv] get/put Key')
+parser.add_option('-b','--storage', dest='storage', action='store_true', default=False, help='BA storage;');
+parser.add_option('-v','--verbose', dest='verbose', action="store_true", default=False, help='verbose output;');
+(options, args) = parser.parse_args()
+verbose = options.verbose
+ba = verbose = options.storage
 
-ba = True
 if ba:
     aws_session = boto3.session.Session(
         aws_access_key_id=os.environ.get('BA_ACCESS_KEY_ID'),
