@@ -11,11 +11,11 @@ Moreover, computing resources are available at LNF and LNGS (Cygno VM login and 
 
 
 ### Signup on computing ressources (needed for all resources: CLOUD, LNGS, LNF)
-* if you alredy have a **username** INFN please signup in the INFN Cloud IAM https://iam.cloud.infn.it/ as **user** ([see INFN Cloud Guide](https://guides.cloud.infn.it/docs/users-guides/en/latest/users_guides/getting_started/getting_started.html)) specifing in the *Notes* field to be part of **cygno-user** group
+* if you alredy have a **username** INFN please signup in the CYGNO Cloud IAM https://iam-cygno.cloud.cnaf.infn.it/ as **user** ([see INFN Cloud Guide](https://guides.cloud.infn.it/docs/users-guides/en/latest/users_guides/getting_started/getting_started.html)) specifing in the *Notes* field to be part of **cygno-user** group
 * if you are not associeted/hosted/employed of INFN plese signup on: https://signup.app.infn.it/ (tips for foreign users see below)
   * accept the security policy  https://userportal.app.infn.it/ (for foreign users no CODICE FISCALE (CF) is needed);
   * follow the traning on computing security;
-  * signup in the INFN Cloud IAM https://iam.cloud.infn.it/ as **user** ([see INFN Cloud Guide](https://guides.cloud.infn.it/docs/users-guides/en/latest/users_guides/getting_started/getting_started.html)) specifing in the *Notes* field to be part of **cygno-user** group
+  * signup in the CYGNO Cloud IAM https://iam-cygno.cloud.cnaf.infn.it/ as **user** ([see INFN Cloud Guide](https://guides.cloud.infn.it/docs/users-guides/en/latest/users_guides/getting_started/getting_started.html)) specifing in the *Notes* field to be part of **cygno-user** group
 * if you do not have username in INFN or you get an error (like below) about username plese contact Giovanni Mazzitelli
 <img src="https://github.com/CYGNUS-RD/cygno/blob/main/img/username_error.png" alt="error" style="width:400px;"/> 
 <!---
