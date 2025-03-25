@@ -6,12 +6,17 @@ import os
 from boto3.s3.transfer import TransferConfig
 ba = False
 from optparse import OptionParser
+urls = ["https://swift.recas.ba.infn.it/", "https://minio.cloud.infn.it/", "https://s3.cr.cnaf.infn.it:7480/" ]
 parser = OptionParser(usage='usage: %prog\t [-ubsv] get/put Key')
+parser.add_option('-u','--url', dest='url', type='string', default=urls[2], 
+                      help='url ['+urls[2]+'];');
 parser.add_option('-b','--storage', dest='storage', action='store_true', default=False, help='BA storage;');
 parser.add_option('-v','--verbose', dest='verbose', action="store_true", default=False, help='verbose output;');
 (options, args) = parser.parse_args()
 verbose = options.verbose
-ba = verbose = options.storage
+ba = options.storage
+url = options.url
+print(url)
 
 if ba:
     aws_session = boto3.session.Session(
@@ -19,16 +24,16 @@ if ba:
         aws_secret_access_key=os.environ.get('BA_SECRET_ACCESS_KEY')
     )
 
-    s3r = aws_session.resource('s3', endpoint_url="https://swift.recas.ba.infn.it/",
+    s3r = aws_session.resource('s3', endpoint_url=urls[0],
                               config=boto3.session.Config(signature_version='s3v4'),verify=True)
     
-    s3 = aws_session.client('s3', endpoint_url="https://swift.recas.ba.infn.it/",
+    s3 = aws_session.client('s3', endpoint_url=urls[0],
                             config=boto3.session.Config(signature_version='s3v4'),verify=True)
 else:
     aws_session = creds.assumed_session("dodas")
-    s3r = aws_session.resource('s3', endpoint_url="https://minio.cloud.infn.it/",
+    s3r = aws_session.resource('s3', endpoint_url=url,
                               config=boto3.session.Config(signature_version='s3v4'),verify=True)
-    s3 = aws_session.client('s3', endpoint_url="https://minio.cloud.infn.it/",
+    s3 = aws_session.client('s3', endpoint_url=url,
                             config=boto3.session.Config(signature_version='s3v4'),verify=True)
 
 for bucket in s3r.buckets.all():
