@@ -8,8 +8,10 @@ from optparse import OptionParser
 
 urls = ["https://swift.recas.ba.infn.it/", "https://minio.cloud.infn.it/", "https://s3.cr.cnaf.infn.it:7480/" ]
 
-parser = OptionParser(usage='usage: %prog\t filename ')
+parser = OptionParser(usage='usage: %prog\t filename -t tag -b bucket')
 parser.add_option('-v','--verbose', dest='verbose', action="store_true", default=False, help='verbose output;');
+parser.add_option('-b','--bucket', dest='bucket', type='string', default='cygno-analysis', help='tag');
+parser.add_option('-t','--tag', dest='tag', type='string', default='', help='tag');
 (options, args) = parser.parse_args()
 verbose = options.verbose
 if len(args)<1:
@@ -69,4 +71,7 @@ else:
     
 GB = 1024 ** 3
 config = TransferConfig(multipart_threshold=5*GB)
-s3.upload_file(filename, Bucket="cygno-analysis", Key=filename, Config=config)
+
+key = filename.split('/')[-1]
+key = options.tag+'/'+key
+s3.upload_file(filename, Bucket=options.bucket, Key=key, Config=config)
