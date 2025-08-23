@@ -1,9 +1,9 @@
 # Computing infrastructure
 The CYGNO exepriment develop a facility based on the [INFN cloud](https://www.cloud.infn.it/) to host:
+- services for experiment monitoring, data analysis and simulation [status and access](https://notebook.cygno.cloud.infn.it) 
 - data experiment storage ([S3 based](https://it.wikipedia.org/wiki/Amazon_S3)) - [status](https://t1metria.cr.cnaf.infn.it/d/000000123/bucket-s3-cygno?orgId=18)
-- tape backup storage - [status](https://t1metria.cr.cnaf.infn.it/d/ZArHZvEMz/storage-usage-per-experiment?orgId=18&var-exp=cygn&var-vo=CYGNO&from=now-30d&to=now) (NB for disk space refer [S3](https://monitoring.cloud.infn.it:3000/d/cygno-s3/storage-s3-cygno?orgId=1) starage status)
-- two notebooks interface with python and root kernles, bach resources, posix acces to data storage - [status nb1](https://90.147.174.175:3000), [status nb2](https://192.135.24.178:3000/login)
-- bach resources accesible via condor queues - [status](https://grafana.131.154.96.115.myip.cloud.infn.it/login)
+- tape backup storage - [status](https://t1metria.cr.cnaf.infn.it/d/ZArHZvEMz/storage-usage-per-experiment?orgId=18&var-exp=cygn&var-vo=CYGNO&from=now-30d&to=now) 
+- bach resources @ CNAF [status](https://t1metria.cr.cnaf.infn.it/d/QbafK_b7z/resource-usage-per-experiment?orgId=18&var-vo=CYGNO&var-exp=cygn&var-exp_cloud=CYGN)
 
 CYGNO status of usage of [pledged resources](https://monitoring.cloud.infn.it:3000/d/u1sBcydVk/cygno-cloud-capacities?orgId=1)
 
