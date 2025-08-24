@@ -80,6 +80,7 @@ Optional: If you create a .bashrc file inside your personal bucket, it will be e
 - migration to Ubuntu 22.04.5 LTS, ptyhon 3.11.9
 - migration to CNAF storage
 - migration to CVMFS storage
+- access to CNAF/CLOUD [queue](https://github.com/CYGNUS-RD/mycondor?tab=readme-ov-file#cygno_htc-command-line)
 ### Tag v1.0.24 ###
  - integration of mango digitizer normailzation files
  - update of the adress for php query
