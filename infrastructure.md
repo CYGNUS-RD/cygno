@@ -1,6 +1,6 @@
 # Computing infrastructure
 The CYGNO exepriment develop a facility based on the [INFN cloud](https://www.cloud.infn.it/) to host:
-- services for experiment monitoring, data analysis and simulation [status and access](https://notebook.cygno.cloud.infn.it) 
+- services for experiment monitoring, data analysis and simulation [status and access page](https://notebook.cygno.cloud.infn.it) 
 - data experiment storage ([S3 based](https://it.wikipedia.org/wiki/Amazon_S3)) - [status](https://t1metria.cr.cnaf.infn.it/d/000000123/bucket-s3-cygno?orgId=18)
 - tape backup storage - [status](https://t1metria.cr.cnaf.infn.it/d/ZArHZvEMz/storage-usage-per-experiment?orgId=18&var-exp=cygn&var-vo=CYGNO&from=now-30d&to=now) 
 - bach resources @ CNAF [status](https://t1metria.cr.cnaf.infn.it/d/QbafK_b7z/resource-usage-per-experiment?orgId=18&var-vo=CYGNO&var-exp=cygn&var-exp_cloud=CYGN)
@@ -34,7 +34,7 @@ Moreover, computing resources are available at LNF and LNGS (Cygno VM login and 
 * if you need also local computing resesources plese fill http://www.lnf.infn.it/computing/cgi-bin/newaccountrequest.pl 
 
 ### Computing resources and OPEN VPN @ LNGS (DAQ, shift, ecc)
-* send an email to: giovanni.mazzitelli@lnf.infn.it to be autorized
+* send an email to: stefano.piacentini@gssi.it to be autorized
 * if you need also local computing resesources **Cygno VM login and U-LITE nodes** (deprecated) plese specify in the mail.
 * when aproved install the profile install the profile https://www.lngs.infn.it/en/vpn
 
@@ -45,18 +45,17 @@ Moreover, computing resources are available at LNF and LNGS (Cygno VM login and 
 ### CYGNO CLOUD Storage
 Data collected by the experiment DAQ are automatically pushed on INFN [S3 cloud](https://it.wikipedia.org/wiki/Amazon_S3) storage. The storage data and the experiment area for analysis and simulation can be acces and manage via: 
 
-* Web Tool: https://minio.cloud.infn.it/minio/login
-* Cloud CYGNO web interfaces tool: https://notebook.cygno.cloud.infn.it/, https://notebook02.cygno.cloud.infn.it/
+* Web Tool: https://s3webui.cygno.cloud.infn.it/
+* Cloud CYGNO web interfaces tool: https://notebook01.cygno.cloud.infn.it/, https://notebook02.cygno.cloud.infn.it/
 * CLI tool: https://github.com/CYGNUS-RD/cygno#cygno-cli-tool-cygno_repo
-* https://s3.cloud.infn.it/v1/AUTH_2ebf769785574195bde2ff418deac08a/bucket-name/tag/file-name
-* https://swift.recas.ba.infn.it/bucket-name/tag/file-name
+* 	Analysis: https://s3.cr.cnaf.infn.it:7480/cygno:cygno-analysis/tag/file-name
+* 	Data: https://s3.cr.cnaf.infn.it:7480/cygno:cygno-data/tag/file-name
+* 	Simulation: https://s3.cr.cnaf.infn.it:7480/cygno:cygno-sim/tag/file-name 
 
 the cloud-storage/ contain tree backet:
 * cloud-data: daq stored data, read only
 * cloud-sim: simulation input and output data, read and write
 * cloud-analysis: analysis input and output data, read and write
-* (cygno - old data repository, USERNAME private repository on cloud, scratch repository on cloud)
-
 
 ### Usage of the CYGNO notebook web interface and Cloud services
 Two VM offer acces to cloud infrastrucure via web services based on jupyter notebook interface
@@ -67,7 +66,20 @@ Two VM offer acces to cloud infrastrucure via web services based on jupyter note
 * the web inteface offer the possibility to run a specific software configuration. In general:
   * tag [dodas](https://github.com/DODAS-TS/dodas-docker-images) realises are the official one and approved by INFN
   * tag [gmazzitelli](https://github.com/gmazzitelli/dodas-docker-images) are realisesed fork of official project our project
- 
+### Tag 2.5 ###
+Personal Bucket
+
+To set it up:
+Go to the storage web browser at: https://s3webui.cygno.cloud.infn.it/. Create a bucket named exactly as your USERNAME (all lowercase), which you can retrieve from a terminal in your notebook by typing: ```echo $USERNAME```
+
+If needed, restart your notebook to enable the changes:
+File → Hub Control Panel → Stop Server → Start Server
+
+Optional: If you create a .bashrc file inside your personal bucket, it will be executed at startup, after the global login but before your local folder's .bashrc. This allows for custom startup configurations.
+### Tag 2.4 ###
+- migration to Ubuntu 22.04.5 LTS, ptyhon 3.11.9
+- migration to CNAF storage
+- migration to CVMFS storage
 ### Tag v1.0.24 ###
  - integration of mango digitizer normailzation files
  - update of the adress for php query
