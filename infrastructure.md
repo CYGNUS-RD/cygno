@@ -79,6 +79,7 @@ Optional: If you create a .bashrc file inside your personal bucket, it will be e
 ### Tag 2.4 ###
 - migration to Ubuntu 22.04.5 LTS, ptyhon 3.11.9
 - migration to CNAF storage
+- integration of 'cygno_setup' to setup for reco software, GENAT etc, with the specification of CYGNO from CVMFS
 - migration to CVMFS storage
 - access to CNAF/CLOUD [queue](https://github.com/CYGNUS-RD/mycondor?tab=readme-ov-file#cygno_htc-command-line)
 ### Tag v1.0.24 ###
