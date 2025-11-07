@@ -79,9 +79,9 @@ class cfile:
         self.x_resolution = x_resolution
         self.y_resolution = y_resolution
 
-def open_mid(run, path='/tmp/',  cloud=True,  Bari=False, tag='LNGS', verbose=False):
+def open_mid(run, path='/tmp/',  cloud=True, tag='LNGS', verbose=False):
     import midas.file_reader
-    fname = s3.mid_file(run, tag=tag, cloud=cloud, Bari=Bari, verbose=verbose)
+    fname = s3.mid_file(run, tag=tag, cloud=cloud, verbose=verbose)
     if verbose: print(fname)
     if not cloud:
         if os.path.exists(path+tag+fname):

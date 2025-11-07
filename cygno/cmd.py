@@ -60,7 +60,7 @@ def cache_file(url, cachedir='/tmp/', verbose=False):
         os.mkdir(cachedir)
     tmpname = cachedir+url.split('/')[-1]
     if not os.path.exists(tmpname):
-        if verbose: print("downloading: "+tmpname)
+        print("downloading: "+tmpname)
         if python_version().split('.')[0]=='3':
             from urllib.request import urlretrieve
             if verbose:
@@ -73,7 +73,7 @@ def cache_file(url, cachedir='/tmp/', verbose=False):
             import urllib
             urllib.urlretrieve(url, tmpname, reporthook)
     else:
-        if verbose: sys.stderr.write('file '+tmpname+' cached')
+        sys.stderr.write('file '+tmpname+' cached')
         
     return tmpname
 
