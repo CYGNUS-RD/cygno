@@ -3,6 +3,7 @@
 import boto3
 import requests
 import urllib.parse
+import json
 
 def my_creds(url, verbose):
 
@@ -48,7 +49,9 @@ def  main(fun, key, url, bucket, session, verbose):
     else:
         url_out = ''
         
-    print(url_out)
+    #print(url_out)
+    print(json.dumps(url_out, indent=2))
+
 
 if __name__ == "__main__":
     from optparse import OptionParser
