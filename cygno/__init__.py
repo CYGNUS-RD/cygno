@@ -401,7 +401,6 @@ def daq_dgz_full2array(bank, header, verbose=False, corrected=True, ch_offset=[]
             number_channels = header.nchannels
             number_samples  = header.nsamples
             
-            waveform = []
             for ievent in range(number_events):       
                 for ichannels in range(number_channels):
                     if verbose:
