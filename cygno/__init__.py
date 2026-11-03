@@ -153,7 +153,7 @@ def get_bor_odb(mfile): # function to acquire the begin of run ODB entries from 
     try:
         odb = mfile.get_bor_odb_dump()
     except:
-        myError("No begin-of-run ODB dump found")
+        raise myError("No begin-of-run ODB dump found")
     
     mfile.jump_to_start()
     return odb
@@ -401,7 +401,6 @@ def daq_dgz_full2array(bank, header, verbose=False, corrected=True, ch_offset=[]
             number_channels = header.nchannels
             number_samples  = header.nsamples
             
-            waveform = []
             for ievent in range(number_events):       
                 for ichannels in range(number_channels):
                     if verbose:
